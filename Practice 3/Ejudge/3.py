@@ -7,7 +7,6 @@ to_triplet = {v: k for k, v in to_digit.items()}
 
 
 def decode(s):
-    """Convert triplet string to integer"""
     digits = []
     for i in range(0, len(s), 3):
         digits.append(to_digit[s[i:i+3]])
@@ -15,7 +14,6 @@ def decode(s):
 
 
 def encode(num):
-    """Convert integer to triplet string"""
     if num == 0:
         return "ZER"
     return "".join(to_triplet[d] for d in str(num))

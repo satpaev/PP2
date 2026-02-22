@@ -4,7 +4,7 @@ q = int(input())
 
 operations = []
 
-for _ in range(q):
+for i in range(q):
     parts = input().split()
     if parts[0] == "add":
         x = int(parts[1])

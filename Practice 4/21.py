@@ -2,7 +2,7 @@ import importlib
 
 n = int(input())
 
-for i in range(n):
+for _ in range(n):
     module_path, attr_name = input().split()
     try:
         module = importlib.import_module(module_path)

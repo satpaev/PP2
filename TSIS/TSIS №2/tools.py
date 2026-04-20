@@ -4,14 +4,14 @@ from datetime import datetime
 
 import pygame
 
-# Window / canvas settings
+# Окно
 WIDTH, HEIGHT = 1100, 720
 TOOLBAR_HEIGHT = 130
 CANVAS_Y = TOOLBAR_HEIGHT
 CANVAS_WIDTH = WIDTH
 CANVAS_HEIGHT = HEIGHT - TOOLBAR_HEIGHT
 
-# Colors
+# Цвета
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GRAY = (200, 200, 200)
@@ -27,13 +27,13 @@ COLOR_OPTIONS = [BLACK, RED, GREEN, BLUE, YELLOW, PURPLE, ORANGE]
 BRUSH_SIZES = {"small": 2, "medium": 5, "large": 10}
 SIZE_ORDER = ["small", "medium", "large"]
 
-
+#текст на экран
 def draw_text(screen, text, x, y, font, color=BLACK):
     """Draw text on the given surface."""
     img = font.render(text, True, color)
     screen.blit(img, (x, y))
 
-
+#правильное строение фигур
 def normalize_rect(start_pos, end_pos):
     """Convert two points into a normal pygame rectangle."""
     x1, y1 = start_pos
@@ -44,7 +44,7 @@ def normalize_rect(start_pos, end_pos):
     height = abs(y1 - y2)
     return pygame.Rect(left, top, width, height)
 
-
+#прямоугольник
 def get_square_rect(start_pos, end_pos):
     """Build a square using the smaller dragged side."""
     x1, y1 = start_pos
@@ -56,14 +56,14 @@ def get_square_rect(start_pos, end_pos):
 
     return pygame.Rect(left, top, side, side)
 
-
+#треугольник
 def get_right_triangle_points(start_pos, end_pos):
     """Return points for a right triangle with legs parallel to axes."""
     x1, y1 = start_pos
     x2, y2 = end_pos
     return [(x1, y1), (x1, y2), (x2, y2)]
 
-
+#равностороний треугольник
 def get_equilateral_triangle_points(start_pos, end_pos):
     """Build an equilateral triangle from dragged width."""
     x1, y1 = start_pos
@@ -93,7 +93,7 @@ def get_equilateral_triangle_points(start_pos, end_pos):
 
     return [(left_x, base_y), (right_x, base_y), (mid_x, apex_y)]
 
-
+#ромб
 def get_rhombus_points(start_pos, end_pos):
     """Return rhombus points inside the dragged rectangle."""
     x1, y1 = start_pos
@@ -114,7 +114,7 @@ def get_rhombus_points(start_pos, end_pos):
         (left, center_y),
     ]
 
-
+#рисовка кружков между двумя точками
 def draw_brush(surface, color, start, end, radius):
     """Draw a smooth freehand stroke by stamping circles along a segment."""
     dx = end[0] - start[0]
@@ -130,7 +130,7 @@ def draw_brush(surface, color, start, end, radius):
         y = int(start[1] + dy * i / steps)
         pygame.draw.circle(surface, color, (x, y), radius)
 
-
+#заливка
 def flood_fill(surface, start_pos, fill_color):
     """Fill an area using exact color matching with get_at and set_at."""
     width, height = surface.get_size()
@@ -176,7 +176,7 @@ def screen_to_canvas(pos):
     x, y = pos
     return x, y - TOOLBAR_HEIGHT
 
-
+#функции фигур
 def draw_shape(surface, tool, color, start_pos, end_pos, thickness):
     """Draw the selected geometric shape on a surface."""
     if tool == "line":
@@ -209,7 +209,7 @@ def save_canvas(canvas):
     pygame.image.save(canvas, filename)
     return filename
 
-
+#верхнее меню
 def draw_toolbar(screen, current_tool, current_color, brush_size_name, brush_size_value, font, small_font):
     """Draw the toolbar and return clickable button rectangles."""
     pygame.draw.rect(screen, GRAY, (0, 0, WIDTH, TOOLBAR_HEIGHT))

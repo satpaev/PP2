@@ -33,11 +33,11 @@ def main():
     small_font = pygame.font.SysFont("Arial", 13)
     text_font = pygame.font.SysFont("Arial", 28)
 
-    # Main drawable surface
+    # Холст для рис
     canvas = pygame.Surface((CANVAS_WIDTH, CANVAS_HEIGHT))
     canvas.fill(WHITE)
 
-    # Current state
+    # Старт настройки
     current_tool = "pencil"
     current_color = BLACK
     brush_size_name = "medium"
@@ -59,7 +59,7 @@ def main():
     while running:
         screen.fill(WHITE)
 
-        # Draw toolbar and current canvas
+        # Рис верх меню
         tool_buttons, color_buttons, size_buttons = draw_toolbar(
             screen,
             current_tool,
@@ -69,17 +69,17 @@ def main():
             font,
             small_font,
         )
-        screen.blit(canvas, (0, TOOLBAR_HEIGHT))
+        screen.blit(canvas, (0, TOOLBAR_HEIGHT)) #вывод рисунка на холсте
         draw_text(screen, status_message, 880, 108, small_font, BLACK)
 
-        # Live text preview before confirming with Enter
+        # превью текста
         if text_mode and text_position is not None:
             preview_surface = canvas.copy()
             text_preview = text_font.render(text_input + "|", True, current_color)
             preview_surface.blit(text_preview, text_position)
             screen.blit(preview_surface, (0, TOOLBAR_HEIGHT))
 
-        # Live preview for line and geometric shapes while dragging
+        # превью фигур
         if drawing and current_tool in {
             "line", "rectangle", "circle", "square",
             "right_triangle", "equilateral_triangle", "rhombus"
@@ -102,13 +102,13 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 mods = pygame.key.get_mods()
 
-                # Save the current canvas with Ctrl+S
+                # сохранение
                 if mods & pygame.KMOD_CTRL and event.key == pygame.K_s:
                     filename = save_canvas(canvas)
                     status_message = f"Saved: {filename}"
                     continue
 
-                # Handle typing when the text tool is active
+                # для текста
                 if text_mode:
                     if event.key == pygame.K_RETURN:
                         if text_input.strip() and text_position is not None:
@@ -136,7 +136,7 @@ def main():
                             text_input += event.unicode
                     continue
 
-                # Global hotkeys for tools and brush sizes
+                # горячие клавиши
                 if event.key == pygame.K_ESCAPE:
                     running = False
                 elif event.key == pygame.K_p:
@@ -174,7 +174,7 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mx, my = event.pos
 
-                # Click inside the toolbar area
+                # нажатие на элементы
                 if my < TOOLBAR_HEIGHT:
                     for tool, rect in tool_buttons.items():
                         if rect.collidepoint(event.pos):
@@ -196,7 +196,7 @@ def main():
                             brush_size = BRUSH_SIZES[brush_size_name]
                             status_message = f"Brush size: {brush_size}px"
 
-                # Click inside the canvas area
+                # нажатие на холст
                 else:
                     canvas_pos = screen_to_canvas(clamp_to_canvas_screen(event.pos))
 
@@ -225,7 +225,7 @@ def main():
                 preview_pos_screen = clamp_to_canvas_screen(event.pos)
                 current_canvas_pos = screen_to_canvas(preview_pos_screen)
 
-                # Freehand drawing uses continuous strokes between positions
+                # свободное рисование либо стирание
                 if current_tool == "pencil":
                     draw_brush(canvas, current_color, last_canvas_pos, current_canvas_pos, brush_size)
                     last_canvas_pos = current_canvas_pos
@@ -236,7 +236,7 @@ def main():
             elif event.type == pygame.MOUSEBUTTONUP and drawing:
                 end_pos_screen = clamp_to_canvas_screen(event.pos)
 
-                # Draw the final shape after mouse release
+                # после отпускания мышки
                 if current_tool in {
                     "line", "rectangle", "circle", "square",
                     "right_triangle", "equilateral_triangle", "rhombus"

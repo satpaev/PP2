@@ -1,0 +1,8 @@
+To pass this practice, you must:
+
+✅ Complete Mickey's Clock application with working clock hands
+✅ Implement Music Player with all keyboard controls
+✅ Create Moving Ball game with boundary checking
+✅ Code must be well-commented and organized
+✅ All three games must run without errors
+✅ Push all code to GitHub with clear commit messages
